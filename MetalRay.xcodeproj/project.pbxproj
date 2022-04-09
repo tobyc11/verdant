@@ -12,6 +12,7 @@
 		DA81D97D28010CB90015F7A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA81D97C28010CB90015F7A7 /* Assets.xcassets */; };
 		DA81D98028010CB90015F7A7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA81D97E28010CB90015F7A7 /* Main.storyboard */; };
 		DA81D98228010CB90015F7A7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DA81D98128010CB90015F7A7 /* main.m */; };
+		DA81D98A280111950015F7A7 /* GPUCode.metal in Sources */ = {isa = PBXBuildFile; fileRef = DA81D989280111950015F7A7 /* GPUCode.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		DA81D97F28010CB90015F7A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DA81D98128010CB90015F7A7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		DA81D98328010CB90015F7A7 /* MetalRay.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MetalRay.entitlements; sourceTree = "<group>"; };
+		DA81D989280111950015F7A7 /* GPUCode.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = GPUCode.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 			children = (
 				DA81D97628010CB80015F7A7 /* AppDelegate.h */,
 				DA81D97728010CB80015F7A7 /* AppDelegate.m */,
+				DA81D989280111950015F7A7 /* GPUCode.metal */,
 				DA81D97928010CB80015F7A7 /* ViewController.h */,
 				DA81D97A28010CB80015F7A7 /* ViewController.m */,
 				DA81D97C28010CB90015F7A7 /* Assets.xcassets */,
@@ -138,6 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA81D97B28010CB80015F7A7 /* ViewController.m in Sources */,
+				DA81D98A280111950015F7A7 /* GPUCode.metal in Sources */,
 				DA81D98228010CB90015F7A7 /* main.m in Sources */,
 				DA81D97828010CB80015F7A7 /* AppDelegate.m in Sources */,
 			);

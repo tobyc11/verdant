@@ -4,7 +4,7 @@
 #include "Scene.h"
 #include <limits>
 
-namespace minirt {
+namespace verdant {
 float3 PathTraceIntegrator::zero_bounce_radiance(const Scene &scene,
                                                  const float3 &world_hit_pos,
                                                  const Intersection &isect) {
@@ -80,4 +80,4 @@ float3 PathTraceIntegrator::Lo_from_ray(const Scene &scene, const Ray &ray,
     return float3::ZERO;
   }
 }
-} // namespace minirt
+} // namespace verdant

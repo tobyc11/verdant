@@ -1,6 +1,6 @@
 #include "Pipeline.h"
 
-namespace minirt {
+namespace verdant {
 PathTracePipeline::PathTracePipeline(unsigned int width, unsigned int height,
                                      unsigned int samples)
     : samples(samples) {
@@ -43,4 +43,4 @@ void PathTracePipeline::run() {
   }
   total_film->write_to_ppm("hello.ppm");
 }
-} // namespace minirt
+} // namespace verdant

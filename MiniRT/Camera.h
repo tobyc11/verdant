@@ -1,7 +1,7 @@
 #pragma once
 #include "MathDefs.h"
 
-namespace minirt {
+namespace verdant {
 class Camera {
 public:
   // Field of view in the Y axis in radians
@@ -43,4 +43,4 @@ private:
   float far_z = 1000.0f;
   bool forward_is_positive_z = false;
 };
-} // namespace minirt
+} // namespace verdant

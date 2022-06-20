@@ -1,6 +1,6 @@
 #include "Shape.h"
 
-namespace minirt {
+namespace verdant {
 bool Sphere::intersect(const Ray &ray, Intersection &isect) const {
   float t0, t1;
   float3 L = center - ray.origin;
@@ -82,4 +82,4 @@ bool Triangle::moller_trumbore(const Ray &ray, float *t, float *u,
 
   return true;
 }
-} // namespace minirt
+} // namespace verdant

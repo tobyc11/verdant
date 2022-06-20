@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-namespace minirt {
+namespace verdant {
 Ray Camera::generate_ray_from_ndc(float2 ndc) {
   float z = -1.0f;
   if (forward_is_positive_z) {
@@ -23,4 +23,4 @@ float2 Camera::uv_to_ndc(float2 uv) {
   float2 temp = uv * 2 - 1;
   return {temp.x(), -temp.y()};
 }
-} // namespace minirt
+} // namespace verdant

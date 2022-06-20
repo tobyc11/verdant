@@ -1,7 +1,7 @@
 #pragma once
 #include "MathDefs.h"
 
-namespace minirt {
+namespace verdant {
 class Shape {
 public:
   virtual bool intersect(const Ray &ray, Intersection &isect) const = 0;
@@ -76,4 +76,4 @@ private:
   float3 dir;
   float radius;
 };
-} // namespace minirt
+} // namespace verdant

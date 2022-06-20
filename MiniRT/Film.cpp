@@ -5,7 +5,7 @@
 #include <fstream>
 #include <memory>
 
-namespace minirt {
+namespace verdant {
 Film::Film(unsigned int width, unsigned int height)
     : width(width), height(height) {
   s = std::make_unique<float3[]>(width * height);
@@ -74,4 +74,4 @@ void Film::write_to_ppm(const std::string &file_name) const {
     ofs << std::endl;
   }
 }
-} // namespace minirt
+} // namespace verdant

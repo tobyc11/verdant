@@ -5,7 +5,7 @@
 #include "Scene.h"
 #include <memory>
 
-namespace minirt {
+namespace verdant {
 class PathTracePipeline {
 public:
   PathTracePipeline(unsigned int width, unsigned int height,
@@ -27,4 +27,4 @@ private:
   std::shared_ptr<Camera> camera;
   std::shared_ptr<Film> film;
 };
-} // namespace minirt
+} // namespace verdant

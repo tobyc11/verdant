@@ -2,7 +2,7 @@
 #include "MathDefs.h"
 #include <memory>
 
-namespace minirt {
+namespace verdant {
 // AKA framebuffer
 class Film {
 public:
@@ -87,4 +87,4 @@ private:
   unsigned int width;
   unsigned int height;
 };
-} // namespace minirt
+} // namespace verdant

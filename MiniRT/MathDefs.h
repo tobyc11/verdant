@@ -2,7 +2,7 @@
 #include <memory>
 #include <vmmlib/matrix.hpp>
 
-namespace minirt {
+namespace verdant {
 using float2 = vmml::Vector<2, float>;
 using float3 = vmml::Vector<3, float>;
 using float4 = vmml::Vector<4, float>;
@@ -62,4 +62,4 @@ struct Intersection {
     return make_tangent_basis() * v;
   }
 };
-} // namespace minirt
+} // namespace verdant

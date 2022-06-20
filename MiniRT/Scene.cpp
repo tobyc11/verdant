@@ -8,7 +8,7 @@
 #include <memory>
 #include <vector>
 
-namespace minirt {
+namespace verdant {
 Primitive::Primitive(std::shared_ptr<Shape> shape,
                      std::shared_ptr<Material> mat)
     : shape(shape), material(mat) {}
@@ -72,4 +72,4 @@ bool Scene::intersect(const Ray &ray, Intersection &isect) const {
   }
   return any_hit;
 }
-} // namespace minirt
+} // namespace verdant

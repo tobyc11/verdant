@@ -3,7 +3,7 @@
 #include <random>
 #include <tuple>
 
-namespace minirt {
+namespace verdant {
 class UniformSampler {
 public:
   UniformSampler() : eng(rd()) {}
@@ -64,4 +64,4 @@ public:
     return value.z() / M_PI;
   }
 };
-} // namespace minirt
+} // namespace verdant

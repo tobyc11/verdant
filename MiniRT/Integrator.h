@@ -3,7 +3,7 @@
 #include "Sampler.h"
 #include "Scene.h"
 
-namespace minirt {
+namespace verdant {
 class PathTraceIntegrator {
 public:
   int get_only_depth() const { return only_depth; }
@@ -17,4 +17,4 @@ private:
   UniformSampler uniform_sampler;
   int only_depth = 0;
 };
-} // namespace minirt
+} // namespace verdant

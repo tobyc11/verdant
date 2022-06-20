@@ -5,7 +5,7 @@
 #include <memory>
 #include <vector>
 
-namespace minirt {
+namespace verdant {
 class Primitive {
 public:
   Primitive(std::shared_ptr<Shape> shape, std::shared_ptr<Material> mat);
@@ -51,4 +51,4 @@ private:
   std::vector<PointLight> point_lights;
   float3 sky_light;
 };
-} // namespace minirt
+} // namespace verdant

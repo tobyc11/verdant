@@ -2,7 +2,7 @@
 #include "MathDefs.h"
 #include <memory>
 
-namespace minirt {
+namespace verdant {
 enum class MaterialKind { Lambert };
 
 class Material {
@@ -18,4 +18,4 @@ private:
   MaterialKind kind;
   float3 c;
 };
-} // namespace minirt
+} // namespace verdant

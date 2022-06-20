@@ -17,9 +17,9 @@ int main() {
   const int N = 10000;
   const int ITERS = 100;
   float result = 0.0f;
-  minirt::UniformSampler base;
+  verdant::UniformSampler base;
   for (int i = 0; i < ITERS; i++) {
-    minirt::CosineWeightedHemisphereDistribution dist;
+    verdant::CosineWeightedHemisphereDistribution dist;
     float batch_result = integrate_one(dist, base, N);
     result += batch_result / ITERS;
   }

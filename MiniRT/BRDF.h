@@ -1,6 +1,6 @@
 #pragma once
 #include "MathDefs.h"
 
-namespace minirt {
+namespace verdant {
 inline float3 F_lambert(float3 c) { return c / M_PI; }
-} // namespace minirt
+} // namespace verdant

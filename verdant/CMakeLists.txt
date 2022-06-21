@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 project(MiniRT)
 
 file(GLOB SRC *.cpp)
-add_executable(MiniRT ${SRC})
-
+add_library(verdant ${SRC})
+target_include_directories(verdant PUBLIC .)
 # Include vmmlib from MetalRay
-target_include_directories(MiniRT PRIVATE ../include)
+target_include_directories(verdant PUBLIC ../include)

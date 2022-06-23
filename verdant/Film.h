@@ -80,6 +80,8 @@ public:
     return r;
   }
 
+  static float3 reinhard_tone_mapping(float3 in) { return in / (in + 1); }
+
 private:
   // Backing storage: r32 g32 b32
   std::unique_ptr<float3[]> s;

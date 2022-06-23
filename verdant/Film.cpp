@@ -66,7 +66,7 @@ void Film::write_to_ppm(const std::string &file_name) const {
         ofs << " ";
       }
       unsigned int i = y * width + x;
-      uint3 colors = clamp_to_255_gamma(s[i], float3::ONE * 3.f, 0.66f);
+      uint3 colors = clamp_to_255(reinhard_tone_mapping(s[i]));
       ofs << colors[0] << " ";
       ofs << colors[1] << " ";
       ofs << colors[2];

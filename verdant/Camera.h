@@ -27,13 +27,13 @@ public:
 
   // NDC is in the range [-1, 1]
   // (-1, -1) is the bottom left corner
-  Ray generate_ray_from_ndc(float2 ndc);
+  Ray generate_ray_from_ndc(float2 ndc) const;
 
   // UV is in the range of [0, 1]
   // (0, 0) is the top left corner of the camera view
-  Ray generate_ray_from_uv(float2 uv);
+  Ray generate_ray_from_uv(float2 uv) const;
 
-  float2 uv_to_ndc(float2 uv);
+  float2 uv_to_ndc(float2 uv) const;
 
 private:
   // Property backings

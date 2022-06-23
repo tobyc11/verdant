@@ -1,7 +1,7 @@
 #include "Camera.h"
 
 namespace verdant {
-Ray Camera::generate_ray_from_ndc(float2 ndc) {
+Ray Camera::generate_ray_from_ndc(float2 ndc) const {
   float z = -1.0f;
   if (forward_is_positive_z) {
     z = 1.0f;
@@ -15,11 +15,11 @@ Ray Camera::generate_ray_from_ndc(float2 ndc) {
   return ray;
 }
 
-Ray Camera::generate_ray_from_uv(float2 uv) {
+Ray Camera::generate_ray_from_uv(float2 uv) const {
   return generate_ray_from_ndc(uv_to_ndc(uv));
 }
 
-float2 Camera::uv_to_ndc(float2 uv) {
+float2 Camera::uv_to_ndc(float2 uv) const {
   float2 temp = uv * 2 - 1;
   return {temp.x(), -temp.y()};
 }

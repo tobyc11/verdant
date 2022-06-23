@@ -6,18 +6,17 @@
 namespace verdant {
 class UniformSampler {
 public:
-  UniformSampler() : eng(rd()) {}
+  UniformSampler();
 
   std::tuple<float, float> sample() {
     std::uniform_real_distribution<> dist(0, 1);
-    return {pdf(), dist(eng)};
+    return {pdf(), dist(my_eng)};
   }
 
   float pdf() const { return 1.0f; }
 
 private:
-  std::random_device rd;
-  std::mt19937 eng;
+  std::mt19937 &my_eng;
 };
 
 class UniformHemisphereDistribution {

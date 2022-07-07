@@ -35,6 +35,6 @@ private:
   std::vector<std::unique_ptr<Task>> tasks;
   std::set<Task *> tasks_running;
   bool shutdown = false;
-  bool debug_print = true;
+  bool debug_print = false;
 };
 } // namespace verdant

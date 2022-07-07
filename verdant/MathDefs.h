@@ -44,16 +44,17 @@ struct Intersection {
   std::shared_ptr<Material> material;
 
   float3x3 make_tangent_basis() const {
-    // 1,2,3 is chosen arbitrarily
-    // There is probably a better algorithm for this
-    float3 tangent = cross(normal, {1, 2, 3});
-    tangent.normalize();
-    float3 bitangent = cross(normal, tangent);
+    float3 i, j, k;
+    k = normal;
+    j = float3(0.0f, 1.0f, 0.0f);
+    i = j.cross(k);
+    i.normalize();
+    j = k.cross(i);
 
     float3x3 tangent_basis;
-    tangent_basis.set_column(0, tangent);
-    tangent_basis.set_column(1, bitangent);
-    tangent_basis.set_column(2, normal);
+    tangent_basis.set_column(0, i);
+    tangent_basis.set_column(1, j);
+    tangent_basis.set_column(2, k);
     return tangent_basis;
   }
 

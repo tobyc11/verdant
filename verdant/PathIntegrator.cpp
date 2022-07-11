@@ -7,9 +7,14 @@ PathIntegrator::PathIntegrator(const Scene &scene, UniformSampler &sampler,
 
 float3 PathIntegrator::Lo_from_ray(const Ray &ray, int bounces) {
   // Remember to divide the return result by pr_continue
-  auto [_pdf, x_continue] = sampler.sample();
-  if (x_continue > pr_continue) {
-    return float3::ZERO;
+  float my_pr_continue = pr_continue;
+  if (bounces < 3) {
+    my_pr_continue = 1.0f;
+  } else {
+    auto [_pdf, x_continue] = sampler.sample();
+    if (x_continue > my_pr_continue) {
+      return float3::ZERO;
+    }
   }
 
   Intersection isect;
@@ -35,10 +40,10 @@ float3 PathIntegrator::Lo_from_ray(const Ray &ray, int bounces) {
     Ray next_ray(world_pos + world_L * RAY_EPS, world_L);
     float3 Li = Lo_from_ray(next_ray, bounces + 1);
     float cosThetaL = std::abs(L.z());
-    return Li * f * cosThetaL / pdf / pr_continue;
+    return Li * f * cosThetaL / pdf / my_pr_continue;
   } else {
     if (scene.has_sky_light()) {
-      return scene.get_sky_light(ray.dir) / pr_continue;
+      return scene.get_sky_light(ray.dir) / my_pr_continue;
     } else {
       return float3::ZERO;
     }

@@ -2,13 +2,14 @@
 
 namespace verdant {
 PathIntegrator::PathIntegrator(const Scene &scene, UniformSampler &sampler,
-                               float pr_continue)
-    : scene(scene), sampler(sampler), pr_continue(pr_continue) {}
+                               float pr_continue, int min_bounces)
+    : scene(scene), sampler(sampler), pr_continue(pr_continue),
+      min_bounces(min_bounces) {}
 
 float3 PathIntegrator::Lo_from_ray(const Ray &ray, int bounces) {
   // Remember to divide the return result by pr_continue
   float my_pr_continue = pr_continue;
-  if (bounces < 3) {
+  if (bounces < min_bounces) {
     my_pr_continue = 1.0f;
   } else {
     auto [_pdf, x_continue] = sampler.sample();

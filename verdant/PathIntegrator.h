@@ -9,7 +9,7 @@ namespace verdant {
 class PathIntegrator {
 public:
   PathIntegrator(const Scene &scene, UniformSampler &sampler,
-                 float pr_continue = 0.9f);
+                 float pr_continue = 0.9f, int min_bounces = 3);
 
   float3 Lo_from_ray(const Ray &ray, int bounces = 0);
 
@@ -20,5 +20,6 @@ private:
   UniformSampler &sampler;
   // Russian roulette termination probability
   float pr_continue;
+  int min_bounces;
 };
 } // namespace verdant

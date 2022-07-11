@@ -9,7 +9,7 @@ namespace verdant {
 class PathIntegrator {
 public:
   PathIntegrator(const Scene &scene, UniformSampler &sampler,
-                 float pr_continue);
+                 float pr_continue = 0.9f);
 
   float3 Lo_from_ray(const Ray &ray);
 

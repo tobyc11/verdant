@@ -6,15 +6,27 @@
 namespace verdant {
 class PathTraceIntegrator {
 public:
-  int get_only_depth() const { return only_depth; }
-  void set_only_depth(int value) { only_depth = value; }
+  float3 Lo_from_ray(UniformSampler &sampler, const Scene &scene,
+                     const Ray &ray, int depth = 1) const;
 
-  float3 zero_bounce_radiance(const Scene &scene, const float3 &world_hit_pos,
-                              const Intersection &isect);
-  float3 Lo_from_ray(const Scene &scene, const Ray &ray, int depth = 1);
+  float3 integrate_direct(UniformSampler &sampler, const Scene &scene,
+                          const Intersection &isect, const float3 &world_view,
+                          const float3 &world_pos) const;
+
+  float3 integrate_indirect(UniformSampler &sampler, const Scene &scene,
+                            const Intersection &isect, const float3 &world_view,
+                            const float3 &world_pos) const;
 
 private:
-  UniformSampler uniform_sampler;
-  int only_depth = 0;
+  int light_samples = 8;
+  float continue_prob = 0.7f;
+};
+
+class DirectOnlyIntegrator {
+public:
+  float3 Lo_from_ray(UniformSampler &sampler, const Scene &scene,
+                     const Ray &ray) const;
+
+  float3 direct_lighting(const Scene &scene, const Ray &ray) const;
 };
 } // namespace verdant

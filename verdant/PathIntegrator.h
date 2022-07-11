@@ -11,7 +11,7 @@ public:
   PathIntegrator(const Scene &scene, UniformSampler &sampler,
                  float pr_continue = 0.9f);
 
-  float3 Lo_from_ray(const Ray &ray);
+  float3 Lo_from_ray(const Ray &ray, int bounces = 0);
 
 private:
   // These references are declared as member fields so that passing a pointer to

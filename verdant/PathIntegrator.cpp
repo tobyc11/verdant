@@ -5,7 +5,7 @@ PathIntegrator::PathIntegrator(const Scene &scene, UniformSampler &sampler,
                                float pr_continue)
     : scene(scene), sampler(sampler), pr_continue(pr_continue) {}
 
-float3 PathIntegrator::Lo_from_ray(const Ray &ray) {
+float3 PathIntegrator::Lo_from_ray(const Ray &ray, int bounces) {
   // Remember to divide the return result by pr_continue
   auto [_pdf, x_continue] = sampler.sample();
   if (x_continue > pr_continue) {
@@ -33,7 +33,7 @@ float3 PathIntegrator::Lo_from_ray(const Ray &ray) {
     float3 f = isect.material->sample_f(sampler, V, L, pdf);
     float3 world_L = L2W * L;
     Ray next_ray(world_pos + world_L * RAY_EPS, world_L);
-    float3 Li = Lo_from_ray(next_ray);
+    float3 Li = Lo_from_ray(next_ray, bounces + 1);
     float cosThetaL = std::abs(L.z());
     return Li * f * cosThetaL / pdf / pr_continue;
   } else {

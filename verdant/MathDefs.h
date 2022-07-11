@@ -49,6 +49,9 @@ struct Intersection {
     float3 i, j, k;
     k = normal;
     j = float3(0.0f, 1.0f, 0.0f);
+    if (dot(j, k) >= 0.9f) {
+      j = float3(1.0f, 0.0f, 0.0f);
+    }
     i = j.cross(k);
     i.normalize();
     j = k.cross(i);

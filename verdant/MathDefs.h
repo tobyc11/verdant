@@ -25,6 +25,8 @@ using float4x2 = vmml::Matrix<4, 2, float>;
 using float4x3 = vmml::Matrix<4, 3, float>;
 using float4x4 = vmml::Matrix<4, 4, float>;
 
+#define RAY_EPS 1e-4f
+
 class Ray {
 public:
   Ray(float3 origin, float3 dir) : origin(origin), dir(dir) {}

@@ -1,4 +1,5 @@
 #pragma once
+#include "HDRImage.h"
 #include "Material.h"
 #include "MathDefs.h"
 #include "Shape.h"
@@ -43,12 +44,22 @@ public:
     return point_lights;
   }
 
-  bool has_sky_light() const { return false; }
-  const float3 &get_sky_light() const { return sky_light; }
+  void set_sky_light(bool on, float3 value) {
+    sky_light = on;
+    sky_light_value = value;
+  }
+  void set_sky_light(bool on, std::shared_ptr<HDRImage> hdr_image) {
+    sky_light = on;
+    sky_light_hdr_image = std::move(hdr_image);
+  }
+  bool has_sky_light() const { return sky_light; }
+  float3 get_sky_light(const float3 &world_dir) const;
 
 private:
   std::vector<Primitive> primitives;
   std::vector<PointLight> point_lights;
-  float3 sky_light;
+  bool sky_light;
+  float3 sky_light_value;
+  std::shared_ptr<HDRImage> sky_light_hdr_image;
 };
 } // namespace verdant

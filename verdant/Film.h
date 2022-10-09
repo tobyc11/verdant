@@ -34,6 +34,8 @@ public:
    */
   void write_to_ppm(const std::string &file_name) const;
 
+  void write_to_rgb32(unsigned char *buffer) const;
+
   /**
    * @brief Clamp floats to the range [0, 1] and converts to 0-255
    *

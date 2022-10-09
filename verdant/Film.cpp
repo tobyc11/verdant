@@ -74,4 +74,19 @@ void Film::write_to_ppm(const std::string &file_name) const {
     ofs << std::endl;
   }
 }
+
+void Film::write_to_rgb32(unsigned char *buffer) const {
+  unsigned int x, y;
+  for (y = 0; y < height; y++) {
+    for (x = 0; x < width; x++) {
+      unsigned int i = y * width + x;
+      uint3 colors = clamp_to_255(reinhard_tone_mapping(s[i]));
+      // BGRA from low byte to high byte
+      *buffer++ = colors[2];
+      *buffer++ = colors[1];
+      *buffer++ = colors[0];
+      *buffer++ = 255;
+    }
+  }
+}
 } // namespace verdant

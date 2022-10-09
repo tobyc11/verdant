@@ -25,6 +25,19 @@ using float4x2 = vmml::Matrix<4, 2, float>;
 using float4x3 = vmml::Matrix<4, 3, float>;
 using float4x4 = vmml::Matrix<4, 4, float>;
 
+// N must already be normalized
+inline float3 reflect(float3 I, float3 N) { return I - 2 * dot(N, I) * N; }
+
+// I, N must already be normalized
+inline float3 refract(float3 I, float3 N, float eta) {
+  auto k = 1 - eta * eta * (1 - dot(N, I) * dot(N, I));
+  if (k < 0) {
+    return float3::ZERO;
+  } else {
+    return eta * I - (eta * dot(N, I) + sqrt(k)) * N;
+  }
+}
+
 #define RAY_EPS 1e-4f
 
 class Ray {

@@ -4,8 +4,11 @@
 #include <memory>
 
 namespace verdant {
-enum class MaterialKind { Lambert, Reflect, Refract, Glass, Specular };
+enum class SurfaceKind { Lambert, Reflect, Refract, Glass, Specular };
 
+// NOTE: to port this code to the lesser GPU programming models (CUDA deals with
+// C++ just fine) without any modification, do not use dynamic dispatch. This is
+// the reason why this is a discriminated union instead of a virtual base.
 class Surface {
 public:
   // Creates a Lambertian material with diffuse reflectance c
@@ -23,8 +26,8 @@ public:
                   float &pdf) const;
 
   bool is_delta() const {
-    return kind == MaterialKind::Reflect || kind == MaterialKind::Refract ||
-           kind == MaterialKind::Glass || kind == MaterialKind::Specular;
+    return kind == SurfaceKind::Reflect || kind == SurfaceKind::Refract ||
+           kind == SurfaceKind::Glass || kind == SurfaceKind::Specular;
   }
 
 protected:
@@ -54,9 +57,9 @@ protected:
   }
 
 private:
-  Surface(MaterialKind kind) : kind(kind) {}
+  Surface(SurfaceKind kind) : kind(kind) {}
 
-  MaterialKind kind;
+  SurfaceKind kind;
   float3 c;
   float etaI, etaT;
 };

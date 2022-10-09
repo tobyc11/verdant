@@ -60,8 +60,7 @@ void PathTracePipeline::run(bool write) {
 void PathTracePipeline::stop() { stop_flag = true; }
 
 void PathTracePipeline::single_pixel(unsigned int x, unsigned int y) {
-  UniformSampler sampler;
-  PathIntegrator integrator(*scene, sampler);
+  PathIntegrator integrator(*scene, UniformSampler::per_thread());
 
   Ray ray = camera->generate_ray_from_uv(film->xy_to_uv(x, y));
   ray.origin.z() += 5.0f;
@@ -78,8 +77,7 @@ void PathTracePipeline::get_status(bool &is_running, int &tiles_total,
 
 void PathTracePipeline::render_tile(unsigned int x_begin, unsigned int y_begin,
                                     unsigned int x_len, unsigned int y_len) {
-  UniformSampler sampler;
-  PathIntegrator integrator(*scene, sampler);
+  PathIntegrator integrator(*scene, UniformSampler::per_thread());
   unsigned int x, y;
   for (y = y_begin; y < y_begin + y_len && y < film->get_height(); y++) {
     for (x = x_begin; x < x_begin + x_len && x < film->get_width(); x++) {

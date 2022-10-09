@@ -10,13 +10,15 @@ public:
 
   std::tuple<float, float> sample() {
     std::uniform_real_distribution<> dist(0, 1);
-    return {pdf(), dist(my_eng)};
+    return {pdf(), dist(random_engine)};
   }
 
   float pdf() const { return 1.0f; }
 
+  static UniformSampler &per_thread();
+
 private:
-  std::mt19937 &my_eng;
+  std::mt19937 random_engine;
 };
 
 class UniformHemisphereDistribution {

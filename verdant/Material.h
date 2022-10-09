@@ -34,6 +34,10 @@ protected:
                              float3 &L, float &pdf) const;
   float3 sample_f_refraction(UniformSampler &sampler, const float3 &V,
                              float3 &L, float &pdf) const;
+  float3 sample_f_glass(UniformSampler &sampler, const float3 &V, float3 &L,
+                        float &pdf) const;
+  float3 sample_f_specular(UniformSampler &sampler, const float3 &V, float3 &L,
+                           float &pdf) const;
 
   template <typename T1, typename T2>
   float3 sum_f(UniformSampler &sampler, const float3 &V, float3 &L, float &pdf,

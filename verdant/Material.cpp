@@ -75,11 +75,9 @@ float3 Material::sample_f(UniformSampler &sampler, const float3 &V, float3 &L,
   case MaterialKind::Refract:
     return sample_f_refraction(sampler, V, L, pdf);
   case MaterialKind::Glass:
-    return sum_f(sampler, V, L, pdf, &Material::sample_f_reflection,
-                 &Material::sample_f_refraction);
+    return sample_f_glass(sampler, V, L, pdf);
   case MaterialKind::Specular:
-    return sum_f(sampler, V, L, pdf, &Material::sample_f_reflection,
-                 &Material::sample_f_lambert);
+    return sample_f_specular(sampler, V, L, pdf);
   }
 }
 
@@ -115,5 +113,38 @@ float3 Material::sample_f_refraction(UniformSampler &sampler, const float3 &V,
 
   float cosThetaT = std::abs(L.z());
   return c * (1 - Fr_dielectric(cosThetaT, etaA, etaB)) / cosThetaT;
+}
+
+float3 Material::sample_f_glass(UniformSampler &sampler, const float3 &V,
+                                float3 &L, float &pdf) const {
+  bool entering = V.z() > 0.f;
+  float etaA = entering ? etaI : etaT;
+  float etaB = entering ? etaT : etaI;
+  float k_reflect = Fr_dielectric(std::abs(V.z()), etaA, etaB);
+
+  auto [_pdf, roll] = sampler.sample();
+  if (roll < k_reflect) {
+    L = float3(-V.x(), -V.y(), V.z());
+    return c / std::abs(L.z());
+  } else {
+    refract(V, float3(0, 0, 1), etaA / etaB, L);
+    return c / std::abs(L.z());
+  }
+}
+
+float3 Material::sample_f_specular(UniformSampler &sampler, const float3 &V,
+                                   float3 &L, float &pdf) const {
+  bool entering = V.z() > 0.f;
+  float etaA = entering ? etaI : etaT;
+  float etaB = entering ? etaT : etaI;
+  float k_reflect = Fr_dielectric(std::abs(V.z()), etaA, etaB);
+
+  auto [_pdf, roll] = sampler.sample();
+  if (roll < k_reflect) {
+    L = float3(-V.x(), -V.y(), V.z());
+    return c / std::abs(L.z());
+  } else {
+    return sample_f_lambert(sampler, V, L, pdf);
+  }
 }
 } // namespace verdant

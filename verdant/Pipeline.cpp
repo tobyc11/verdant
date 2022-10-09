@@ -20,20 +20,44 @@ PathTracePipeline::PathTracePipeline(unsigned int width, unsigned int height,
   camera->set_fov_y(M_PI / 180.f * 90.f);
 }
 
-void PathTracePipeline::run() {
+void PathTracePipeline::run(bool write) {
   const unsigned int tile_len = 256;
+
+  // Cannot call run when it is already running
+  if (is_running) {
+    return;
+  }
+
+  is_running = true;
+  stop_flag = false;
+  tiles_total = 0;
+  tiles_completed = 0;
 
   unsigned int y, x;
   std::vector<const Task *> tasks;
   for (y = 0; y < film->get_height(); y += tile_len) {
     for (x = 0; x < film->get_width(); x += tile_len) {
+      tiles_total += 1;
       tasks.push_back(TaskQueue::default_queue().enqueue(
           [this, x, y, tile_len]() { render_tile(x, y, tile_len, tile_len); }));
     }
   }
+
   TaskQueue::default_queue().enqueue_await_all(
-      [this]() { film->write_to_ppm("hello.ppm"); }, tasks);
+      [this]() {
+        is_running = false;
+        if (event_callback)
+          event_callback(user_data, EventType::NoLongerRunning);
+      },
+      tasks);
+
+  if (write) {
+    TaskQueue::default_queue().enqueue_await_all(
+        [this]() { film->write_to_ppm("hello.ppm"); }, tasks);
+  }
 }
+
+void PathTracePipeline::stop() { stop_flag = true; }
 
 void PathTracePipeline::single_pixel(unsigned int x, unsigned int y) {
   UniformSampler sampler;
@@ -43,6 +67,13 @@ void PathTracePipeline::single_pixel(unsigned int x, unsigned int y) {
   ray.origin.z() += 5.0f;
   float3 Li = integrator.Lo_from_ray(ray);
   film->average_radiance(x, y, Li);
+}
+
+void PathTracePipeline::get_status(bool &is_running, int &tiles_total,
+                                   int &tiles_completed) const {
+  is_running = this->is_running;
+  tiles_total = this->tiles_total;
+  tiles_completed = this->tiles_completed;
 }
 
 void PathTracePipeline::render_tile(unsigned int x_begin, unsigned int y_begin,
@@ -58,8 +89,16 @@ void PathTracePipeline::render_tile(unsigned int x_begin, unsigned int y_begin,
       for (t = 0; t < samples; t++) {
         float3 Li = integrator.Lo_from_ray(ray);
         film->average_radiance(x, y, Li);
+
+        if (stop_flag) {
+          return;
+        }
       }
     }
   }
+
+  tiles_completed.fetch_add(1);
+  if (event_callback)
+    event_callback(user_data, EventType::TileCompleted);
 }
 } // namespace verdant

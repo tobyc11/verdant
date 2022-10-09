@@ -6,14 +6,14 @@
 namespace verdant {
 enum class MaterialKind { Lambert, Reflect, Refract, Glass, Specular };
 
-class Material {
+class Surface {
 public:
   // Creates a Lambertian material with diffuse reflectance c
-  static std::shared_ptr<Material> create_lambert(float3 c);
-  static std::shared_ptr<Material> create_reflect(float3 c, float eta);
-  static std::shared_ptr<Material> create_refract(float3 c, float eta);
-  static std::shared_ptr<Material> create_glass(float3 c, float eta);
-  static std::shared_ptr<Material> create_specular(float3 c, float eta);
+  static std::shared_ptr<Surface> create_lambert(float3 c);
+  static std::shared_ptr<Surface> create_reflect(float3 c, float eta);
+  static std::shared_ptr<Surface> create_refract(float3 c, float eta);
+  static std::shared_ptr<Surface> create_glass(float3 c, float eta);
+  static std::shared_ptr<Surface> create_specular(float3 c, float eta);
 
   // Both L and V are in BRDF coordinates, with normal being (0, 0, 1)
   float3 f(const float3 &L, const float3 &V) const;
@@ -54,7 +54,7 @@ protected:
   }
 
 private:
-  Material(MaterialKind kind) : kind(kind) {}
+  Surface(MaterialKind kind) : kind(kind) {}
 
   MaterialKind kind;
   float3 c;

@@ -36,14 +36,14 @@ public:
 };
 
 // Forward declaration for Intersection members
-class Material;
+class Surface;
 
 // Intersection is the main interface between Scene and the rest of the ray
 // tracer
 struct Intersection {
   float t;
   float3 normal;
-  std::shared_ptr<Material> material;
+  std::shared_ptr<Surface> material;
 
   float3x3 make_tangent_basis() const {
     float3 i, j, k;

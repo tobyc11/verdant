@@ -1,7 +1,7 @@
 #include "Scene.h"
-#include "Material.h"
 #include "MathDefs.h"
 #include "Shape.h"
+#include "Surface.h"
 #include <cmath>
 #include <cstdio>
 #include <limits>
@@ -9,8 +9,7 @@
 #include <vector>
 
 namespace verdant {
-Primitive::Primitive(std::shared_ptr<Shape> shape,
-                     std::shared_ptr<Material> mat)
+Primitive::Primitive(std::shared_ptr<Shape> shape, std::shared_ptr<Surface> mat)
     : shape(shape), material(mat) {}
 
 bool Primitive::intersect(const Ray &ray, Intersection &isect) const {
@@ -23,31 +22,31 @@ bool Primitive::intersect(const Ray &ray, Intersection &isect) const {
 
 Scene::Scene() {
   set_sky_light(true, float3::ONE);
-  std::shared_ptr<Material> furnace_material =
-      Material::create_lambert(float3::ONE * 0.18f);
-  std::shared_ptr<Material> default_material =
-      Material::create_lambert(float3::ONE * 0.9f);
-  std::shared_ptr<Material> green_material =
-      Material::create_lambert(float3(0.2f, 1.0f, 0.2f));
+  std::shared_ptr<Surface> furnace_material =
+      Surface::create_lambert(float3::ONE * 0.18f);
+  std::shared_ptr<Surface> default_material =
+      Surface::create_lambert(float3::ONE * 0.9f);
+  std::shared_ptr<Surface> green_material =
+      Surface::create_lambert(float3(0.2f, 1.0f, 0.2f));
 
-  std::shared_ptr<Material> glass_material =
-      Material::create_glass(float3(1.0f, 1.0f, 1.0f), 1.5f);
-  std::shared_ptr<Material> transparent_material =
-      Material::create_refract(float3(1.0f, 1.0f, 1.0f), 1.5f);
+  std::shared_ptr<Surface> glass_material =
+      Surface::create_glass(float3(1.0f, 1.0f, 1.0f), 1.5f);
+  std::shared_ptr<Surface> transparent_material =
+      Surface::create_refract(float3(1.0f, 1.0f, 1.0f), 1.5f);
 
   if (false) {
-    // std::shared_ptr<Material> default_material =
-    //     Material::create_lambert(float3::ONE * 0.9f);
+    // std::shared_ptr<Surface> default_material =
+    //     Surface::create_lambert(float3::ONE * 0.9f);
     primitives.emplace_back(std::make_shared<Sphere>(3.0f), default_material);
   } else {
     // add_point_light({2.5f, 0.0f, 2.5f}, {1.0f, 3.0f, 5.0f});
     for (int i = 0; i < 6; i++) {
       primitives.emplace_back(
           std::make_shared<Sphere>(1.0f, float3(-4 + 2 * i, 0.f, 0.f)),
-          i != 2 ? Material::create_glass(
+          i != 2 ? Surface::create_glass(
                        float3(abs(sinf(i)), abs(cosf(i)), abs(1 - sinf(i))),
                        1.1f + 0.1f * i)
-                 : Material::create_glass(float3::ONE, 1.5f));
+                 : Surface::create_glass(float3::ONE, 1.5f));
     }
     // primitives.emplace_back(std::make_shared<Sphere>(1.0f),
     //                         transparent_material);

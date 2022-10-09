@@ -1,20 +1,20 @@
 #pragma once
 #include "HDRImage.h"
-#include "Material.h"
 #include "MathDefs.h"
 #include "Shape.h"
+#include "Surface.h"
 #include <memory>
 #include <vector>
 
 namespace verdant {
 class Primitive {
 public:
-  Primitive(std::shared_ptr<Shape> shape, std::shared_ptr<Material> mat);
+  Primitive(std::shared_ptr<Shape> shape, std::shared_ptr<Surface> mat);
   bool intersect(const Ray &ray, Intersection &isect) const;
 
 private:
   std::shared_ptr<Shape> shape;
-  std::shared_ptr<Material> material;
+  std::shared_ptr<Surface> material;
 };
 
 class PointLight {

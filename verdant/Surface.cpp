@@ -1,48 +1,48 @@
-#include "Material.h"
+#include "Surface.h"
 #include "BRDF.h"
 #include "Sampler.h"
 #include <memory>
 
 namespace verdant {
-std::shared_ptr<Material> Material::create_lambert(float3 c) {
-  std::shared_ptr<Material> m(new Material(MaterialKind::Lambert));
+std::shared_ptr<Surface> Surface::create_lambert(float3 c) {
+  std::shared_ptr<Surface> m(new Surface(MaterialKind::Lambert));
   m->c = c;
   return m;
 }
 
-std::shared_ptr<Material> Material::create_reflect(float3 c, float eta) {
-  std::shared_ptr<Material> m(new Material(MaterialKind::Reflect));
-  m->c = c;
-  m->etaI = 1.0f;
-  m->etaT = eta;
-  return m;
-}
-
-std::shared_ptr<Material> Material::create_refract(float3 c, float eta) {
-  std::shared_ptr<Material> m(new Material(MaterialKind::Refract));
+std::shared_ptr<Surface> Surface::create_reflect(float3 c, float eta) {
+  std::shared_ptr<Surface> m(new Surface(MaterialKind::Reflect));
   m->c = c;
   m->etaI = 1.0f;
   m->etaT = eta;
   return m;
 }
 
-std::shared_ptr<Material> Material::create_glass(float3 c, float eta) {
-  std::shared_ptr<Material> m(new Material(MaterialKind::Glass));
+std::shared_ptr<Surface> Surface::create_refract(float3 c, float eta) {
+  std::shared_ptr<Surface> m(new Surface(MaterialKind::Refract));
   m->c = c;
   m->etaI = 1.0f;
   m->etaT = eta;
   return m;
 }
 
-std::shared_ptr<Material> Material::create_specular(float3 c, float eta) {
-  std::shared_ptr<Material> m(new Material(MaterialKind::Specular));
+std::shared_ptr<Surface> Surface::create_glass(float3 c, float eta) {
+  std::shared_ptr<Surface> m(new Surface(MaterialKind::Glass));
   m->c = c;
   m->etaI = 1.0f;
   m->etaT = eta;
   return m;
 }
 
-float3 Material::f(const float3 &L, const float3 &V) const {
+std::shared_ptr<Surface> Surface::create_specular(float3 c, float eta) {
+  std::shared_ptr<Surface> m(new Surface(MaterialKind::Specular));
+  m->c = c;
+  m->etaI = 1.0f;
+  m->etaT = eta;
+  return m;
+}
+
+float3 Surface::f(const float3 &L, const float3 &V) const {
   if (is_delta()) {
     return float3::ZERO;
   }
@@ -64,7 +64,7 @@ inline bool refract(const float3 &V, const float3 &N, float eta, float3 &T) {
   return true;
 }
 
-float3 Material::sample_f(UniformSampler &sampler, const float3 &V, float3 &L,
+float3 Surface::sample_f(UniformSampler &sampler, const float3 &V, float3 &L,
                           float &pdf) const {
   pdf = 1.0f;
   switch (kind) {
@@ -81,7 +81,7 @@ float3 Material::sample_f(UniformSampler &sampler, const float3 &V, float3 &L,
   }
 }
 
-float3 Material::sample_f_lambert(UniformSampler &sampler, const float3 &V,
+float3 Surface::sample_f_lambert(UniformSampler &sampler, const float3 &V,
                                   float3 &L, float &pdf) const {
   CosineWeightedHemisphereDistribution dist;
   auto [pdf2, L2] = dist.sample(sampler);
@@ -90,7 +90,7 @@ float3 Material::sample_f_lambert(UniformSampler &sampler, const float3 &V,
   return F_lambert(c);
 }
 
-float3 Material::sample_f_reflection(UniformSampler &sampler, const float3 &V,
+float3 Surface::sample_f_reflection(UniformSampler &sampler, const float3 &V,
                                      float3 &L, float &pdf) const {
   // Specular reflection
   L = float3(-V.x(), -V.y(), V.z());
@@ -98,7 +98,7 @@ float3 Material::sample_f_reflection(UniformSampler &sampler, const float3 &V,
   return c * Fr_dielectric(cosThetaT, etaI, etaT) / cosThetaT;
 }
 
-float3 Material::sample_f_refraction(UniformSampler &sampler, const float3 &V,
+float3 Surface::sample_f_refraction(UniformSampler &sampler, const float3 &V,
                                      float3 &L, float &pdf) const {
   // Specular transmission
   bool entering = V.z() > 0.0f;
@@ -115,7 +115,7 @@ float3 Material::sample_f_refraction(UniformSampler &sampler, const float3 &V,
   return c * (1 - Fr_dielectric(cosThetaT, etaA, etaB)) / cosThetaT;
 }
 
-float3 Material::sample_f_glass(UniformSampler &sampler, const float3 &V,
+float3 Surface::sample_f_glass(UniformSampler &sampler, const float3 &V,
                                 float3 &L, float &pdf) const {
   bool entering = V.z() > 0.f;
   float etaA = entering ? etaI : etaT;
@@ -132,7 +132,7 @@ float3 Material::sample_f_glass(UniformSampler &sampler, const float3 &V,
   }
 }
 
-float3 Material::sample_f_specular(UniformSampler &sampler, const float3 &V,
+float3 Surface::sample_f_specular(UniformSampler &sampler, const float3 &V,
                                    float3 &L, float &pdf) const {
   bool entering = V.z() > 0.f;
   float etaA = entering ? etaI : etaT;

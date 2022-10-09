@@ -2,6 +2,11 @@
 #include "Scene.h"
 
 namespace verdant {
+enum PathIntegratorFlags {
+  PIF_NO_INDIRECT = 1,
+  PIF_NO_DIRECT = 2,
+};
+
 /**
  * @brief Whitted path tracing integrator
  * @note This class is not meant to be long-lived.
@@ -11,7 +16,7 @@ public:
   PathIntegrator(const Scene &scene, UniformSampler &sampler,
                  float pr_continue = 0.9f, int min_bounces = 3);
 
-  float3 Lo_from_ray(const Ray &ray, int bounces = 0);
+  float3 Lo_from_ray(const Ray &ray, int bounces = 0, int flags = 0);
 
 private:
   // These references are declared as member fields so that passing a pointer to

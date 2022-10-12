@@ -11,6 +11,7 @@ class Primitive {
 public:
   Primitive(std::shared_ptr<Shape> shape, std::shared_ptr<Surface> mat);
   bool intersect(const Ray &ray, Intersection &isect) const;
+  BBox3 get_bounds() const { return shape->get_bounds(); }
 
 private:
   std::shared_ptr<Shape> shape;

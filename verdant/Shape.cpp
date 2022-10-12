@@ -31,6 +31,8 @@ bool Sphere::intersect(const Ray &ray, Intersection &isect) const {
   return true;
 }
 
+BBox3 Sphere::get_bounds() const { return {center - radius, center + radius}; }
+
 Triangle::Triangle(const float3 &p0, const float3 &p1, const float3 &p2) {
   pos[0] = p0;
   pos[1] = p1;
@@ -53,6 +55,12 @@ bool Triangle::intersect(const Ray &ray, Intersection &isect) const {
   isect.t = t;
   isect.normal = u * normal[0] + v * normal[1] + (1 - u - v) * normal[2];
   return hit;
+}
+
+BBox3 Triangle::get_bounds() const {
+  BBox3 b;
+  b.expand(pos[0]).expand(pos[1]).expand(pos[2]);
+  return b;
 }
 
 bool Triangle::moller_trumbore(const Ray &ray, float *t, float *u,
@@ -82,4 +90,6 @@ bool Triangle::moller_trumbore(const Ray &ray, float *t, float *u,
 
   return true;
 }
+
+BBox3 LineSegment::get_bounds() const { throw "unimplemented"; }
 } // namespace verdant

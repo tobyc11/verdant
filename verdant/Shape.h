@@ -1,10 +1,12 @@
 #pragma once
+#include "BBox3.h"
 #include "MathDefs.h"
 
 namespace verdant {
 class Shape {
 public:
   virtual bool intersect(const Ray &ray, Intersection &isect) const = 0;
+  virtual BBox3 get_bounds() const = 0;
 };
 
 class Sphere : public Shape {
@@ -13,6 +15,7 @@ public:
       : radius(radius), center(center) {}
 
   bool intersect(const Ray &ray, Intersection &isect) const override;
+  BBox3 get_bounds() const override;
 
 private:
   float radius;
@@ -24,6 +27,7 @@ public:
   Triangle(const float3 &p0, const float3 &p1, const float3 &p2);
 
   bool intersect(const Ray &ray, Intersection &isect) const override;
+  BBox3 get_bounds() const override;
 
   bool moller_trumbore(const Ray &ray, float *t, float *u, float *v) const;
 
@@ -51,6 +55,8 @@ public:
     }
     return false;
   }
+
+  BBox3 get_bounds() const override;
 
   static bool line_line_closest_point(const float3 &O0, const float3 &D0,
                                       const float3 &O1, const float3 &D1,

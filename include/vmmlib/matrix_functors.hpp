@@ -71,7 +71,7 @@ struct set_to_identity_functor
 // this functor compares to matrices, and also returns true/equal if
 // the matrices have the same values but some rows/columns are inverted
 template< typename T >
-struct matrix_equals_allow_inverted_rows : std::binary_function< const T&, const T&, bool >
+struct matrix_equals_allow_inverted_rows
 {
 
     bool operator()( const T& matrix0, const T& matrix1 )
@@ -112,7 +112,7 @@ struct matrix_equals_allow_inverted_rows : std::binary_function< const T&, const
 }; // struct matrix_equals_allow_inverted_rows
 
 template< typename T >
-struct matrix_equals_allow_inverted_columns : std::binary_function< const T&, const T&, bool >
+struct matrix_equals_allow_inverted_columns
 {
 
     bool operator()( const T& matrix0, const T& matrix1 )

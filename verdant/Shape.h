@@ -5,6 +5,9 @@
 namespace verdant {
 class Shape {
 public:
+  // Intersection test between a ray and arbitrary shape
+  // Will only return true and update isect if this object is closer than
+  // isect.t
   virtual bool intersect(const Ray &ray, Intersection &isect) const = 0;
   virtual BBox3 get_bounds() const = 0;
 };

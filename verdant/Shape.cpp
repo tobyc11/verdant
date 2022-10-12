@@ -25,10 +25,13 @@ bool Sphere::intersect(const Ray &ray, Intersection &isect) const {
       return false;
     }
   }
-  isect.t = t0;
-  float3 position = ray.origin + t0 * ray.dir;
-  isect.normal = normalize(position - center);
-  return true;
+  if (t0 < isect.t) {
+    isect.t = t0;
+    float3 position = ray.origin + t0 * ray.dir;
+    isect.normal = normalize(position - center);
+    return true;
+  }
+  return false;
 }
 
 BBox3 Sphere::get_bounds() const { return {center - radius, center + radius}; }
@@ -52,9 +55,13 @@ bool Triangle::intersect(const Ray &ray, Intersection &isect) const {
   if (t < 0) {
     return false;
   }
-  isect.t = t;
-  isect.normal = u * normal[0] + v * normal[1] + (1 - u - v) * normal[2];
-  return hit;
+
+  if (hit && t < isect.t) {
+    isect.t = t;
+    isect.normal = u * normal[0] + v * normal[1] + (1 - u - v) * normal[2];
+    return true;
+  }
+  return false;
 }
 
 BBox3 Triangle::get_bounds() const {

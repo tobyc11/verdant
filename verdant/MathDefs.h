@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 #include <memory>
 #include <vmmlib/matrix.hpp>
 
@@ -24,6 +25,24 @@ using float3x4 = vmml::Matrix<3, 4, float>;
 using float4x2 = vmml::Matrix<4, 2, float>;
 using float4x3 = vmml::Matrix<4, 3, float>;
 using float4x4 = vmml::Matrix<4, 4, float>;
+
+// Component-wise min
+inline float3 min(const float3 &l, const float3 &r) {
+  float3 ret;
+  for (int i = 0; i < 3; i++) {
+    ret[i] = std::min(l[i], r[i]);
+  }
+  return ret;
+}
+
+// Component-wise max
+inline float3 max(const float3 &l, const float3 &r) {
+  float3 ret;
+  for (int i = 0; i < 3; i++) {
+    ret[i] = std::max(l[i], r[i]);
+  }
+  return ret;
+}
 
 // N must already be normalized
 inline float3 reflect(float3 I, float3 N) { return I - 2 * dot(N, I) * N; }

@@ -9,3 +9,7 @@ add_library(verdant ${SRC})
 target_include_directories(verdant PUBLIC .)
 # Include vmmlib from MetalRay
 target_include_directories(verdant PUBLIC ../include)
+
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+target_link_libraries(verdant PUBLIC Threads::Threads)

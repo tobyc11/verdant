@@ -9,7 +9,7 @@ public:
   UniformSampler();
 
   std::tuple<float, float> sample() {
-    std::uniform_real_distribution<> dist(0, 1);
+    std::uniform_real_distribution<float> dist(0, 1);
     return {pdf(), dist(random_engine)};
   }
 

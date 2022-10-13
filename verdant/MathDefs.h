@@ -53,7 +53,7 @@ inline float3 refract(float3 I, float3 N, float eta) {
   if (k < 0) {
     return float3::ZERO;
   } else {
-    return eta * I - (eta * dot(N, I) + sqrt(k)) * N;
+    return eta * I - (eta * dot(N, I) + sqrtf(k)) * N;
   }
 }
 

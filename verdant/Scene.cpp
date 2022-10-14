@@ -85,7 +85,7 @@ bool Scene::intersect(const Ray &ray, Intersection &isect) const {
   bool any_hit = false;
   isect.t = std::numeric_limits<float>::infinity();
   for (const auto &prim : primitives) {
-    any_hit = any_hit || prim.intersect(ray, isect);
+    any_hit = prim.intersect(ray, isect) || any_hit;
   }
   return any_hit;
 }

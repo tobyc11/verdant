@@ -65,4 +65,13 @@ public:
     return value.z() / M_PI;
   }
 };
+
+// Takes the value 1 with probability p and value 0 with probability 1-p
+inline int bernoulli_toss(UniformSampler &sampler, float p) {
+  auto [pdf, x] = sampler.sample();
+  if (x < p) {
+    return 1;
+  }
+  return 0;
+}
 } // namespace verdant

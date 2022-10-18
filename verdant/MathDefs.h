@@ -57,10 +57,11 @@ inline float3 refract(float3 I, float3 N, float eta) {
   }
 }
 
-#define RAY_EPS 1e-4f
+#define RAY_EPS 1e-4
 
 class Ray {
 public:
+  Ray() {}
   Ray(float3 origin, float3 dir) : origin(origin), dir(dir) {}
 
   float3 origin;

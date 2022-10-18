@@ -1,7 +1,6 @@
 #pragma once
 #include "Camera.h"
 #include "Film.h"
-#include "Integrator.h"
 #include "Scene.h"
 #include <atomic>
 #include <memory>

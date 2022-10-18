@@ -1,6 +1,5 @@
 #include "Pipeline.h"
-#include "Integrator.h"
-#include "PathIntegrator.h"
+#include "PathTracer.h"
 #include "Sampler.h"
 #include "TaskQueue.h"
 #include <memory>
@@ -60,11 +59,11 @@ void PathTracePipeline::run(bool write) {
 void PathTracePipeline::stop() { stop_flag = true; }
 
 void PathTracePipeline::single_pixel(unsigned int x, unsigned int y) {
-  PathIntegrator integrator(*scene, UniformSampler::per_thread());
+  PathTracer integrator(*scene, UniformSampler::per_thread());
 
   Ray ray = camera->generate_ray_from_uv(film->xy_to_uv(x, y));
   ray.origin.z() += 5.0f;
-  float3 Li = integrator.Lo_from_ray(ray);
+  float3 Li = integrator.radiance(ray);
   film->average_radiance(x, y, Li);
 }
 
@@ -77,7 +76,7 @@ void PathTracePipeline::get_status(bool &is_running, int &tiles_total,
 
 void PathTracePipeline::render_tile(unsigned int x_begin, unsigned int y_begin,
                                     unsigned int x_len, unsigned int y_len) {
-  PathIntegrator integrator(*scene, UniformSampler::per_thread());
+  PathTracer integrator(*scene, UniformSampler::per_thread());
   unsigned int x, y;
   for (y = y_begin; y < y_begin + y_len && y < film->get_height(); y++) {
     for (x = x_begin; x < x_begin + x_len && x < film->get_width(); x++) {
@@ -85,7 +84,7 @@ void PathTracePipeline::render_tile(unsigned int x_begin, unsigned int y_begin,
       Ray ray = camera->generate_ray_from_uv(film->xy_to_uv(x, y));
       ray.origin.z() += 5.0f;
       for (t = 0; t < samples; t++) {
-        float3 Li = integrator.Lo_from_ray(ray);
+        float3 Li = integrator.radiance(ray);
         film->average_radiance(x, y, Li);
 
         if (stop_flag) {

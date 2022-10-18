@@ -2,6 +2,7 @@ xcuserdata
 build
 .cache
 build-*
+build_*
 
 # This file is used to ignore files which are generated
 # ----------------------------------------------------------------------------

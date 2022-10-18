@@ -10,11 +10,11 @@ bool BVHNode::intersect(const Ray &ray, Intersection &isect) const {
   bool any_hit = false;
   if (is_leaf) {
     for (const auto &item : items) {
-      any_hit = any_hit || item->intersect(ray, isect);
+      any_hit = item->intersect(ray, isect) || any_hit;
     }
   } else {
-    any_hit = any_hit || left->intersect(ray, isect);
-    any_hit = any_hit || right->intersect(ray, isect);
+    any_hit = left->intersect(ray, isect) || any_hit;
+    any_hit = right->intersect(ray, isect) || any_hit;
   }
   return any_hit;
 }

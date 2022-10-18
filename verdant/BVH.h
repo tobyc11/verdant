@@ -10,22 +10,27 @@ class Primitive;
 // that yet
 class BVHNode {
 public:
-  BVHNode(BBox3 bounds, std::vector<Primitive *> items);
-  BVHNode(BBox3 bounds, BVHNode *left, BVHNode *right);
+  BVHNode(BBox3 bounds, std::vector<Primitive *> items)
+      : bounds(bounds), left(nullptr), right(nullptr), items(std::move(items)) {
+  }
+
+  BVHNode(BBox3 bounds, BVHNode *left, BVHNode *right)
+      : bounds(bounds), left(left), right(right) {}
 
   const BBox3 &get_bounds() const { return bounds; }
   bool intersect(const Ray &ray, Intersection &isect) const;
 
 private:
   BBox3 bounds;
-  BVHNode *left{};
-  BVHNode *right{};
+  BVHNode *left;
+  BVHNode *right;
   std::vector<Primitive *> items;
 };
 
 class BVH {
 public:
-  explicit BVH(std::vector<Primitive *> items) { root = build_from(items, 16); }
+  BVH() = default;
+  explicit BVH(std::vector<Primitive *> items) { root = build_from(items, 4); }
 
   bool intersect(const Ray &ray, Intersection &isect) const;
   BBox3 get_bounds() const;
@@ -33,6 +38,6 @@ public:
 private:
   static BVHNode *build_from(std::vector<Primitive *> items, int max_leaf_size);
 
-  BVHNode *root;
+  BVHNode *root{};
 };
 } // namespace verdant

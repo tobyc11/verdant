@@ -82,12 +82,8 @@ bool Scene::intersect(const Ray &ray, Intersection &isect) const {
   //        world_ray.origin.y(), world_ray.origin.z(), world_ray.dir.x(),
   //        world_ray.dir.y(), world_ray.dir.z());
 
-  bool any_hit = false;
   isect.t = std::numeric_limits<float>::infinity();
-  for (const auto &prim : primitives) {
-    any_hit = prim.intersect(ray, isect) || any_hit;
-  }
-  return any_hit;
+  return bvh.intersect(ray, isect);
 }
 
 float3 Scene::get_sky_light(const float3 &world_dir) const {

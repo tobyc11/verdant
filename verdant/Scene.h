@@ -1,4 +1,5 @@
 #pragma once
+#include "BVH.h"
 #include "HDRImage.h"
 #include "MathDefs.h"
 #include "Shape.h"
@@ -35,6 +36,14 @@ class Scene {
 public:
   Scene();
 
+  void build_bvh() {
+    std::vector<Primitive *> prefs;
+    for (auto &prim : primitives) {
+      prefs.push_back(&prim);
+    }
+    bvh = BVH(std::move(prefs));
+  }
+
   bool intersect(const Ray &ray, Intersection &isect) const;
 
   void add_point_light(float3 position, float3 irradiance) {
@@ -62,5 +71,6 @@ private:
   bool sky_light;
   float3 sky_light_value;
   std::shared_ptr<HDRImage> sky_light_hdr_image;
+  BVH bvh;
 };
 } // namespace verdant

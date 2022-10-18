@@ -3,6 +3,7 @@
 #include "TaskWorker.h"
 #include <cstdlib>
 #include <cstring>
+#include <iostream>
 #include <memory>
 
 using namespace verdant;
@@ -10,28 +11,76 @@ using namespace verdant;
 int main(int argc, char **argv) {
   TaskWorker::init_default_workers();
   int samples = 32;
+  std::string output_name = "image.ppm";
+  std::shared_ptr<HDRImage> image;
+
   // --single x y
   int x, y, single_shot = 0;
-  if (argc == 4) {
-    if (strcmp(argv[1], "--single") == 0) {
-      x = atoi(argv[2]);
-      y = atoi(argv[3]);
-      single_shot = 1;
-      printf("Single shot pixel %d %d\n", x, y);
-    }
-  } else if (argc >= 2) {
-    // First argument is sample rate
-    samples = atoi(argv[1]);
-    if (!samples) {
-      samples = 32;
+
+  for (int i = 1; i < argc; i++) {
+    auto arg = std::string(argv[i]);
+    if (arg == "--single") {
+      i += 1;
+      if (i < argc) {
+        x = atoi(argv[i]);
+      } else {
+        std::cerr << "--single needs arguments x and y" << std::endl;
+        return -1;
+      }
+      i += 1;
+      if (i < argc) {
+        y = atoi(argv[i]);
+      } else {
+        std::cerr << "--single needs arguments x and y" << std::endl;
+        return -1;
+      }
+    } else if (arg == "--samples" || arg == "-s") {
+      i += 1;
+      if (i < argc) {
+        samples = atoi(argv[i]);
+        if (samples == 0) {
+          std::cerr << "--samples must be followed by a positive integer"
+                    << std::endl;
+          return -1;
+        }
+      } else {
+        std::cerr << "--samples missing argument" << std::endl;
+        return -1;
+      }
+    } else if (arg == "--output" || arg == "-o") {
+      i += 1;
+      if (i < argc) {
+        output_name = std::string(argv[i]);
+      } else {
+        std::cerr << "--output missing argument" << std::endl;
+        return -1;
+      }
+    } else if (arg == "--hdr-sky") {
+      i += 1;
+      if (i < argc) {
+        image = std::make_shared<HDRImage>(argv[i]);
+      } else {
+        std::cerr << "--hdr-sky missing argument" << std::endl;
+        return -1;
+      }
     }
   }
-  printf("Sample count is %d\n", samples);
+
+  if (single_shot) {
+    printf("Single shot pixel %d %d\n", x, y);
+  } else {
+    printf("Sample count is %d\n", samples);
+  }
   PathTracePipeline pipeline(320 * 4, 240 * 4, samples);
+  if (image) {
+    pipeline.get_scene()->set_sky_light(true, image);
+  }
+  pipeline.get_scene()->build_bvh();
+
   if (single_shot) {
     pipeline.single_pixel(x, y);
   } else {
-    pipeline.run();
+    pipeline.run(output_name);
   }
   TaskWorker::shutdown_default_workers();
   return 0;

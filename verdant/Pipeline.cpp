@@ -19,7 +19,7 @@ PathTracePipeline::PathTracePipeline(unsigned int width, unsigned int height,
   camera->set_fov_y(M_PI / 180.f * 90.f);
 }
 
-void PathTracePipeline::run(bool write) {
+void PathTracePipeline::run(const std::string &file_name, bool write) {
   const unsigned int tile_len = 256;
 
   // Cannot call run when it is already running
@@ -52,7 +52,7 @@ void PathTracePipeline::run(bool write) {
 
   if (write) {
     TaskQueue::default_queue().enqueue_await_all(
-        [this]() { film->write_to_ppm("hello.ppm"); }, tasks);
+        [this, file_name]() { film->write_to_ppm(file_name); }, tasks);
   }
 }
 

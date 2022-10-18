@@ -20,7 +20,7 @@ public:
   std::shared_ptr<Film> get_film() const { return film; }
 
   // Both run and stop are async. Use event_callback to listen to events.
-  void run(bool write = true);
+  void run(const std::string &file_name, bool write = true);
   void stop();
 
   void single_pixel(unsigned int x, unsigned int y);
